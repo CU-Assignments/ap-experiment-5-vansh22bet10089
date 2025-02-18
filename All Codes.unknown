@@ -1,0 +1,102 @@
+# Aim:  
+To determine the maximum profit that can be achieved by buying and selling stocks multiple times while following the restriction that after selling a stock,
+you must wait (cooldown) one day before buying again.
+
+#code: 
+int maxProfit(vector<int> &prices) {
+    int buy(INT_MIN), sell(0), prev_sell(0), prev_buy;
+    for (int price : prices) {
+        prev_buy = buy;
+        buy = max(prev_sell - price, buy);
+        prev_sell = sell;
+        sell = max(prev_buy + price, sell);
+    }
+    return sell;
+}
+
+
+
+# Aim:
+Perfect Square.
+
+# Code:
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j * j <= i; ++j){
+            dp[i] = min(dp[i], dp[i - j * j] + 1);
+            }
+        }
+        return dp[n];
+    }
+};
+
+
+
+# Aim: Word Break
+
+#Code:
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<bool> dp(s.size() + 1, false);
+        dp[0] = true;
+
+        for (int i = 1; i <= s.size(); i++) {
+            for (const string& w : wordDict) {
+                int start = i - w.length();
+                if (start >= 0 && dp[start] && s.substr(start, w.length()) == w) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.size()];        
+    }
+};
+
+
+
+# Aim: Word Break-II.
+
+# Code:
+class Solution {
+public:
+    int n;
+    unordered_set<string> words;
+    string s_cpy;
+    string path;
+    vector<string> solution;
+
+    void solve(int i){
+        if(i == n){
+            path.pop_back();
+            solution.push_back(path);
+            return;
+        }
+        for(int len = 1; i + len <= n; len++){
+            string sub = s_cpy.substr(i, len);
+            if(words.find(sub) != words.end()){
+                int size = path.size();
+                path += sub; 
+                path.push_back(' ');
+                solve(i + len); 
+                path.resize(size);
+            }
+        }
+    }
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        n = s.size();
+        words = unordered_set<string>(wordDict.begin(), wordDict.end());
+        s_cpy = s;
+        solve(0);
+        return solution;
+    }
+};
+
+
+

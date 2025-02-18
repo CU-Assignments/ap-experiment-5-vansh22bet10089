@@ -1,0 +1,23 @@
+# Aim:
+To find the contiguous subarray within a given integer array nums that has the largest sum and return that sum.
+
+# Objectives:
+Identify Maximum Sum Subarray: Determine the contiguous subarray that yields the highest sum.
+Optimize Performance: Use an efficient algorithm, preferably Kadane’s Algorithm with O(n) time complexity.
+
+# code:
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int currSum=0, maxSum=INT_MIN;
+
+        for(int val: nums){
+            currSum += val;
+            maxSum = max(currSum, maxSum);
+            if(currSum<0){
+                currSum=0;
+            }
+        }
+        return maxSum;
+    }
+};
